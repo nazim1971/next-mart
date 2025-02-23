@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -28,7 +29,7 @@ export default function RegisterForm() {
   } = form;
 
   const password = form.watch("password");
-  const passwordConfirm = form.watch("passwordConfirm");
+  const passwordConfirm = form.watch("passwordConfirm"); // check password and confirm password are same
   //   console.log(password, passwordConfirm);
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
