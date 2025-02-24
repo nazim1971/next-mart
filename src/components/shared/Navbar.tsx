@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Logo from "@/app/assets/svgs/Logo";
 import { Button } from "../ui/button";
@@ -8,22 +8,28 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Heart, LogOut, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { logout } from "@/services/AuthService";
 import { useUser } from "@/context/UserContext";
+import { usePathname, useRouter } from "next/navigation";
+import { protectedRoute } from "@/constant";
 
 export default function Navbar() {
+  const { user, setIsLoading } = useUser();
+  const pathName = usePathname();
+  const route = useRouter();
 
-  const {user,setIsLoading} = useUser();
-
-  const handleLogout = () =>{
-    logout()
-    setIsLoading(true)
-  }
+  const handleLogout = () => {
+    logout();
+    setIsLoading(true);
+    if (protectedRoute.some((route) => pathName.match(route))) {
+      route.push("/");
+    }
+  };
 
   return (
     <header className="border-b w-full">
@@ -46,40 +52,43 @@ export default function Navbar() {
           <Button variant="outline" className="rounded-full p-0 size-10">
             <ShoppingBag />
           </Button>
-         {
-           user ?  
-        <>
-       {
-        user.hasShop &&  (<Link href="/create-shop">
-        <Button className={`rounded-full `}>
-          Create shop
-        </Button>
-      </Link> )
-       }
+          {user ? (
+            <>
+              {user.hasShop && (
+                <Link href="/create-shop">
+                  <Button className={`rounded-full `}>Create shop</Button>
+                </Link>
+              )}
 
-         <DropdownMenu>
-           <DropdownMenuTrigger>
-             <Avatar>
-               <AvatarImage src="https://github.com/shadcn.png" />
-               <AvatarFallback>User</AvatarFallback>
-             </Avatar>{" "}
-           </DropdownMenuTrigger>
-           <DropdownMenuContent>
-             <DropdownMenuLabel>My Account</DropdownMenuLabel>
-             <DropdownMenuSeparator />
-             <DropdownMenuItem>Profile</DropdownMenuItem>
-             <DropdownMenuItem>Dashboard</DropdownMenuItem>
-             <DropdownMenuItem>My shop</DropdownMenuItem>
-             <DropdownMenuSeparator />
-             <DropdownMenuItem className="bg-red-500 cursor-pointer" onClick={handleLogout}> <LogOut/> <span>Logout</span> </DropdownMenuItem>
-           </DropdownMenuContent>
-         </DropdownMenu>
-        </> :
-        <Link href="/login">
-        <Button className="rounded-full">Login</Button>
-      </Link>
-      
-         }
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <Avatar>
+                    <AvatarImage src="https://github.com/shadcn.png" />
+                    <AvatarFallback>User</AvatarFallback>
+                  </Avatar>{" "}
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>Profile</DropdownMenuItem>
+                  <DropdownMenuItem>Dashboard</DropdownMenuItem>
+                  <DropdownMenuItem>My shop</DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    className="bg-red-500 cursor-pointer"
+                    onClick={handleLogout}
+                  >
+                    {" "}
+                    <LogOut /> <span>Logout</span>{" "}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </>
+          ) : (
+            <Link href="/login">
+              <Button className="rounded-full">Login</Button>
+            </Link>
+          )}
         </nav>
       </div>
     </header>
