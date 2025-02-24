@@ -32,6 +32,7 @@ export default function LoginForm() {
 
   const handleReCaptcha = async (value: string | null) => {
     try {
+      // console.log(value);
       const res = await reCaptchaTokenVerification(value!);
       if (res?.success) {
         setReCaptchaStatus(true);

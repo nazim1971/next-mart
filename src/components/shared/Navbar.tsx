@@ -1,6 +1,15 @@
 import Logo from "@/app/assets/svgs/Logo";
 import { Button } from "../ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 import { Heart, ShoppingBag } from "lucide-react";
+import Link from "next/link";
 
 export default function Navbar() {
   return (
@@ -24,6 +33,26 @@ export default function Navbar() {
           <Button variant="outline" className="rounded-full p-0 size-10">
             <ShoppingBag />
           </Button>
+          <Link href="/login">
+            <Button className="rounded-full">Login</Button>
+          </Link>
+          <Link href="/create-shop">
+            <Button variant="outline" className="rounded-full">
+              Create shop
+            </Button>
+          </Link>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger>Open</DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>Profile</DropdownMenuItem>
+              <DropdownMenuItem>Billing</DropdownMenuItem>
+              <DropdownMenuItem>Team</DropdownMenuItem>
+              <DropdownMenuItem>Subscription</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </nav>
       </div>
     </header>
