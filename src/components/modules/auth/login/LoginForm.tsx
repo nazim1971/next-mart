@@ -19,9 +19,10 @@ import { toast } from "sonner";
 import { loginSchema } from "./loginValidation";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useUser } from "@/context/UserContext";
 
 export default function LoginForm() {
-
+  const {setIsLoading} = useUser();
   const router = useRouter();
   const form = useForm({
     resolver: zodResolver(loginSchema),
@@ -49,6 +50,7 @@ export default function LoginForm() {
     try {
       const res = await loginUser(data);
       if (res?.success) {
+        setIsLoading(true)
         router.push('/')
         toast.success(res?.message);
 

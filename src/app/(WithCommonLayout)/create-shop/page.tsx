@@ -1,8 +1,9 @@
+import CreateShopForm from "@/components/modules/shop/create-shop/CreateShopForm";
 
 const CreateShopPage = () => {
     return (
-        <div>
-            This is create shop page
+        <div className="flex justify-center  items-center">
+           <CreateShopForm/>
         </div>
     );
 };
