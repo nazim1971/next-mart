@@ -18,8 +18,11 @@ import { loginUser, reCaptchaTokenVerification } from "@/services/AuthService";
 import { toast } from "sonner";
 import { loginSchema } from "./loginValidation";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
+
+  const router = useRouter();
   const form = useForm({
     resolver: zodResolver(loginSchema),
   });
@@ -46,7 +49,9 @@ export default function LoginForm() {
     try {
       const res = await loginUser(data);
       if (res?.success) {
+        router.push('/')
         toast.success(res?.message);
+
       } else {
         toast.error(res?.message);
       }
