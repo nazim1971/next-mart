@@ -3,6 +3,7 @@
 import Logo from "@/app/assets/svgs/Logo";
 import { Button } from "@/components/ui/button";
 import NMImageUploader from "@/components/ui/core/NMImageUploader";
+import ImagePreviewer from "@/components/ui/core/NMImageUploader/ImagePreviewer";
 import {
   Form,
   FormControl,
@@ -13,6 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { createShop } from "@/services/shop";
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -44,13 +46,13 @@ export default function CreateShopForm() {
       formData.append("data", JSON.stringify(modifiedData));
       formData.append("logo", imageFiles[0] as File);
 
-    //   const res = await createShop(formData);
+      const res = await createShop(formData);
 
-      console.log(formData);
+      console.log(res);
 
-    //   if (res.success) {
-    //     toast.success(res.message);
-     // }
+      if (res.success) {
+         toast.success(res.message);
+     }
     } catch (err: any) {
       console.error(err);
     }
