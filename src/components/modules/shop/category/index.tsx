@@ -1,9 +1,14 @@
 
+import { ICategory } from "@/types";
 import CreateCategoryModel from "./CreateCategoryModel";
 
+type TCategoriesProps = {
+    categories: ICategory[]
+}
 
 
-const ManageCategories = () => {
+const ManageCategories = ({categories}: TCategoriesProps ) => {
+    console.log("Heello cat", categories);
     return (
         <div>
            <div className="flex justify-between">

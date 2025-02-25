@@ -17,7 +17,7 @@ export const createCategory = async (data: FormData) =>{
    }
 }
 
-const geetAllCategories = async() =>{
+export const getAllCategories = async() =>{
     try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/category`);
         return res.json();
