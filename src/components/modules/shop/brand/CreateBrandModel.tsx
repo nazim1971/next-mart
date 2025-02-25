@@ -12,21 +12,26 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues,SubmitHandler, useForm } from "react-hook-form";
-import { Textarea } from "@/components/ui/textarea";
-import { categorySchema } from "./categoryValidaation";
 import { useState } from "react";
 import NMImageUploader from "@/components/ui/core/NMImageUploader";
 import ImagePreviewer from "@/components/ui/core/NMImageUploader/ImagePreviewer";
-import { createCategory } from "@/services/Category";
 import { toast } from "sonner";
+import { createBrand } from "@/services/Brand";
+import { z } from "zod";
 
-const CreateCategoryModel = () => {
+export const BrandSchema = z.object({
+  name: z
+    .string({ required_error: "Name is required" }),
+});
+
+
+const CreateBrandModel = () => {
 
       const [imageFiles, setImageFiles] = useState<File[] | []>([]);
       const [imagePreview, setImagePreview] = useState<string[] | []>([]);
   // State to manage form inputs
    const form = useForm({
-     resolver: zodResolver(categorySchema),
+     resolver: zodResolver(BrandSchema),
    });
 
    const {
@@ -38,9 +43,9 @@ const CreateCategoryModel = () => {
         console.log(data);
         const formData = new FormData();
         formData.append("data", JSON.stringify(data))
-        formData.append("icon", imageFiles[0] as File);
+        formData.append("logo", imageFiles[0] as File);
 
-        const res = await createCategory(formData);
+        const res = await createBrand(formData);
 
         if(res.success){
             toast.success(res?.message)
@@ -54,11 +59,11 @@ const CreateCategoryModel = () => {
     <div>
       <Dialog>
         <DialogTrigger asChild>
-          <Button className="text-lg">Create Category</Button>
+          <Button className="text-lg">Create Brand</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
-            <DialogTitle>Create product category</DialogTitle>
+            <DialogTitle>Create product Brand</DialogTitle>
           </DialogHeader>
           <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -77,23 +82,6 @@ const CreateCategoryModel = () => {
           />
         <div className="flex justify-between mt-5">
             
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Description</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        className="h-36 w-64"
-                        {...field}
-                        value={field.value || ""}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
 
             {imagePreview.length > 0 ? (
               <ImagePreviewer
@@ -127,4 +115,4 @@ const CreateCategoryModel = () => {
   );
 };
 
-export default CreateCategoryModel;
+export default CreateBrandModel;
