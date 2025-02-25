@@ -5,6 +5,10 @@ import { NMTable } from "@/components/ui/core/NMTable";
 import { ColumnDef } from "@tanstack/react-table";
 import { Trash } from "lucide-react";
 import Image from "next/image";
+import { deleteCategory } from "@/services/Category";
+import { useState } from "react";
+import { toast } from "sonner";
+import DeleteConfirmationModal from "@/components/ui/core/NMModel/DeleteConfirmationModal";
 
 type TCategoriesProps = {
     categories: ICategory[]
@@ -13,10 +17,34 @@ type TCategoriesProps = {
 
 const ManageCategories = ({categories}: TCategoriesProps ) => {
 
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [selectedId, setSelectedId] = useState<string | null>(null);
+    const [selectedItem, setSelectedItem] = useState<string | null>(null);
+
     const handleDelete = (data: ICategory) => {
         console.log(data);
+        setSelectedId(data?._id);
+        setSelectedItem(data?.name)
+        setModalOpen(true);
       };
-    console.log("Hello cat", categories);
+
+      const handleDeleteConfirm = async () => {
+        try {
+          if (selectedId) {
+            const res = await deleteCategory(selectedId);
+            console.log(res);
+            if (res.success) {
+              toast.success(res.message);
+              setModalOpen(false);
+            } else {
+              toast.error(res.message);
+            }
+          }
+        } catch (err: any) {
+          console.error(err?.message);
+        }
+      };
+    
 
  const columns: ColumnDef<ICategory>[] = [
     {
@@ -73,7 +101,12 @@ const ManageCategories = ({categories}: TCategoriesProps ) => {
                   <CreateCategoryModel/>
             </div> 
             <NMTable data={categories} columns={columns} />
-            
+            <DeleteConfirmationModal
+        name={selectedItem}
+        isOpen={isModalOpen}
+        onOpenChange={setModalOpen}
+        onConfirm={handleDeleteConfirm}
+      />
         </div>
     );
 };

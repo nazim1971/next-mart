@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -21,7 +22,7 @@ import { createCategory } from "@/services/Category";
 import { toast } from "sonner";
 
 const CreateCategoryModel = () => {
-
+  const [isModalOpen, setModalOpen] = useState(false);
       const [imageFiles, setImageFiles] = useState<File[] | []>([]);
       const [imagePreview, setImagePreview] = useState<string[] | []>([]);
   // State to manage form inputs
@@ -43,7 +44,9 @@ const CreateCategoryModel = () => {
         const res = await createCategory(formData);
 
         if(res.success){
+          setModalOpen(false);
             toast.success(res?.message)
+            
         }
     } catch (err: any) {
       console.error(err);
@@ -52,8 +55,8 @@ const CreateCategoryModel = () => {
 
   return (
     <div>
-      <Dialog>
-        <DialogTrigger asChild>
+      <Dialog open={isModalOpen} onOpenChange={setModalOpen}  >
+        <DialogTrigger  asChild>
           <Button className="text-lg">Create Category</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[500px]">
@@ -118,6 +121,7 @@ const CreateCategoryModel = () => {
             className="mt-5 w-full"
           >
             {isSubmitting ? "Submitting...." : "Submit"}
+           
           </Button>
         </form>
       </Form>
