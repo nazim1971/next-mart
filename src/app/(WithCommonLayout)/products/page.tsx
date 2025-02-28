@@ -1,11 +1,13 @@
+import ProductBanner from "@/components/modules/products/banner";
+import NMContainer from "@/components/ui/core/NMContainer/NMContainer";
 
 
-const ProductsPage = () => {
+const AllProductsPage = () => {
     return (
-        <div>
-            This is product page
-        </div>
+        <NMContainer>
+            <ProductBanner title="All Products" path="Home - products" />
+        </NMContainer>
     );
 };
 
-export default ProductsPage;
+export default AllProductsPage;
